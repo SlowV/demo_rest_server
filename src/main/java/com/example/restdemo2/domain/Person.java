@@ -1,18 +1,21 @@
 package com.example.restdemo2.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@ToString
 @Entity
 public class Person implements Serializable {
     @Id
@@ -25,6 +28,9 @@ public class Person implements Serializable {
 
     @Enumerated(value = EnumType.STRING)
     private Status status;
+
+    @OneToMany(mappedBy = "person", fetch = FetchType.LAZY)
+    private Set<Task> tasks = new HashSet<>();
 
     public enum Status {
         ACTIVE,
