@@ -2,8 +2,6 @@ package com.example.restdemo2.dto;
 
 import com.example.restdemo2.domain.Person;
 import com.example.restdemo2.domain.Task;
-import com.example.restdemo2.util.ObjectUtil;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import org.modelmapper.ModelMapper;
 
@@ -24,6 +22,7 @@ public class PersonDTO {
     private String dobFormat;
     private String statusStr;
     private Person.Status status;
+    private Boolean isHasTask;
 
     private List<Task> tasks = new ArrayList<>();
 
@@ -37,6 +36,7 @@ public class PersonDTO {
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
         this.dobFormat = formatter.format(person.getDob());
         this.salaryFormat = convertUSDToVND(this.salary);
+        this.isHasTask = !this.tasks.isEmpty();
     }
 
     public String convertUSDToVND(double salary) {

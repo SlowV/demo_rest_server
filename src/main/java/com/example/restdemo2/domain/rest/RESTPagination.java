@@ -1,4 +1,4 @@
-package com.example.restdemo2.endpoint.rest;
+package com.example.restdemo2.domain.rest;
 
 public class RESTPagination {
     private int page;
