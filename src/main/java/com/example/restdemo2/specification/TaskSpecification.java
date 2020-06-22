@@ -1,9 +1,9 @@
 package com.example.restdemo2.specification;
 
 import com.example.restdemo2.domain.Person;
+import com.example.restdemo2.domain.Person_;
 import com.example.restdemo2.domain.Task;
-import com.example.restdemo2.specification.singular.Person_;
-import com.example.restdemo2.specification.singular.Task_;
+import com.example.restdemo2.domain.Task_;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.util.StringUtils;
 
@@ -34,9 +34,8 @@ public class TaskSpecification {
         return StringUtils.isEmpty(id)
                 ? all()
                 : ((Root<Task> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) -> {
-            Join<Task, Person> itemNode = root.join("person");
             query.distinct(true);
-            return criteriaBuilder.equal(itemNode.get("id"), id);
+            return criteriaBuilder.equal(root.get(Person_.ID), id);
         });
     }
 

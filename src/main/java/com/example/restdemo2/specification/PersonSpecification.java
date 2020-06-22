@@ -1,6 +1,7 @@
 package com.example.restdemo2.specification;
 
 import com.example.restdemo2.domain.Person;
+import com.example.restdemo2.domain.Person_;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.util.StringUtils;
 
@@ -36,7 +37,7 @@ public class PersonSpecification {
                 ? all()
                 : ((Root<Person> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) -> {
             query.distinct(true);
-            return criteriaBuilder.equal(root.get("status"), status);
+            return criteriaBuilder.equal(root.get(Person_.STATUS), status);
         });
     }
 
@@ -45,7 +46,7 @@ public class PersonSpecification {
                 ? all()
                 : ((Root<Person> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) -> {
             query.distinct(true);
-            return criteriaBuilder.like(root.get("name"), "%" + name + "%");
+            return criteriaBuilder.like(root.get(Person_.NAME), "%" + name + "%");
         });
     }
 

@@ -23,7 +23,7 @@ public class PersonEndpoint {
         return personService.getAll(keyword, status, page, limit);
     }
 
-    @PostMapping(value = "/update")
+    @PutMapping(value = "/update")
     public ResponseEntity<Object> update(@RequestBody PersonDTO personDTO) {
         return personService.update(personDTO);
     }
