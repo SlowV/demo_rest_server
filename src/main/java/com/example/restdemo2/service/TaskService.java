@@ -29,7 +29,7 @@ public class TaskService {
         Optional.ofNullable(personId).ifPresent(specification::withPerson);
         List<Task> list = taskRepository.findAll(specification.build());
         return new ResponseEntity<>(
-                RESTResponse.Builder()
+                new RESTResponse.Success()
                         .setStatus(HttpStatus.OK.value())
                         .setMessage("Lấy danh sách công việc thành công!")
                         .setDatas(list.stream().map(TaskDTO::new).collect(Collectors.toList()))
@@ -43,7 +43,7 @@ public class TaskService {
         Task task = taskDTO.toEntity();
         task.setPerson(person);
         return new ResponseEntity<>(
-                RESTResponse.Builder()
+                new RESTResponse.Success()
                         .setStatus(HttpStatus.CREATED.value())
                         .setMessage("Lưu công việc thành công!")
                         .setData(new TaskDTO(taskRepository.save(task)))

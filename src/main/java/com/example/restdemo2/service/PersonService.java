@@ -35,7 +35,7 @@ public class PersonService {
         Page<Person> pageP = personRepository.findAll(specifications.build(), PageRequest.of(page - 1, limit));
 
         return new ResponseEntity<>(
-                RESTResponse.Builder()
+                new RESTResponse.Success()
                         .setStatus(HttpStatus.OK.value())
                         .setMessage("Lấy danh sách thành công!")
                         .setDatas(pageP.getContent().stream().map(PersonDTO::new).collect(Collectors.toList()))
@@ -48,38 +48,41 @@ public class PersonService {
     public ResponseEntity<Object> update(PersonDTO personDTO) {
         Person person = personDTO.toEntity();
         Long id = person.getId();
-
-        RESTResponse response = RESTResponse.Builder();
-        response.setStatus(HttpStatus.NOT_FOUND.value())
-                .setMessage("Không tìm thấy person nào với ID =" + id);
-
-        getExist(id).ifPresent(p -> {
-            if (haveNotTask(p.getId()) || p.getStatus() == person.getStatus()) {
-                response.setData(new PersonDTO(personRepository.save(person)))
-                        .setMessage("Sửa thành công!")
-                        .setStatus(HttpStatus.OK.value());
-            } else {
-                response.setMessage("Sửa thất bại. Vì Person đã có công việc(task) nên không thể thay đổi trạng thái!")
-                        .setStatus(HttpStatus.BAD_REQUEST.value());
-            }
-        });
-
+        Person pResult = getExist(id);
+       if (pResult != null) {
+           if (haveNotTask(pResult.getId()) || pResult.getStatus() == person.getStatus()) {
+               return ResponseEntity.ok(
+                       new RESTResponse.Success().setData(new PersonDTO(personRepository.save(person)))
+                               .setMessage("Sửa thành công!")
+                               .setStatus(HttpStatus.OK.value())
+               );
+           } else {
+               return ResponseEntity.ok(
+                       new RESTResponse.SimpleError()
+                               .setMessage("Sửa thất bại.")
+                               .setCode(HttpStatus.BAD_REQUEST.value())
+               );
+           }
+       }
         return new ResponseEntity<>(
-                response.build(),
-                HttpStatus.OK
+                new RESTResponse.SimpleError()
+                        .setCode(HttpStatus.NOT_FOUND.value())
+                        .setMessage("Không thể tìm thấy Person với ID là: " + id)
+                        .build(),
+                HttpStatus.NOT_FOUND
         );
     }
 
-    private Optional<Person> getExist(Long id) {
-        return personRepository.findById(id);
+    private Person getExist(Long id) {
+        return personRepository.findById(id).orElse(null);
     }
 
     public ResponseEntity<Object> findOne(Long id) {
         ResponseEntity<Object> responseEntity;
-        Person person = getExist(id).orElse(null);
+        Person person = getExist(id);
         if (StringUtils.isEmpty(person)) {
             responseEntity = new ResponseEntity<>(
-                    RESTResponse.Builder()
+                    new RESTResponse.Success()
                             .setMessage("Không tìm thất Person nào với ID = " + id)
                             .setStatus(HttpStatus.NOT_FOUND.value())
                             .build(),
@@ -87,7 +90,7 @@ public class PersonService {
             );
         } else {
             responseEntity = new ResponseEntity<>(
-                    RESTResponse.Builder()
+                    new RESTResponse.Success()
                             .setData(new PersonDTO(person))
                             .setMessage("Lấy Person thành công!")
                             .setStatus(HttpStatus.OK.value())
