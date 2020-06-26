@@ -156,9 +156,8 @@ public class RESTResponse {
             restResponse.addResponse("message", this.message);
             if (this.datas.size() == 1) {
                 restResponse.addResponse("data", this.datas.get(0));
-
             } else {
-                restResponse.addResponse("datas", this.datas);
+                restResponse.addResponse("data", this.datas);
             }
             if (this.pagination != null) {
                 restResponse.addResponse("pagination", this.pagination);
@@ -170,7 +169,7 @@ public class RESTResponse {
             RESTResponse restResponse = new RESTResponse();
             restResponse.addResponse("status", this.status);
             restResponse.addResponse("message", this.message);
-            restResponse.addResponse("datas", this.datas);
+            restResponse.addResponse("data", this.datas);
             if (this.pagination != null) {
                 restResponse.addResponse("pagination", this.pagination);
             }

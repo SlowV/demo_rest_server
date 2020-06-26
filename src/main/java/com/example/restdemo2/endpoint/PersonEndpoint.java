@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping(value = "/api_v1/person")
 public class PersonEndpoint {
@@ -24,7 +26,7 @@ public class PersonEndpoint {
     }
 
     @PutMapping(value = "/update")
-    public ResponseEntity<Object> update(@RequestBody PersonDTO personDTO) {
+    public ResponseEntity<Object> update(@Valid @RequestBody PersonDTO personDTO) {
         return personService.update(personDTO);
     }
 

@@ -5,6 +5,8 @@ import com.example.restdemo2.domain.Task;
 import lombok.Data;
 import org.modelmapper.ModelMapper;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -14,8 +16,11 @@ public class PersonDTO {
     private static ModelMapper modelMapper = new ModelMapper();
 
     private Long id;
+    @NotBlank(message = "Không được bỏ trống!")
     private String name;
+    @Min(value = 13, message = "Tuổi bắt buộc phải lớn hơn 13")
     private Integer age;
+    @Min(value = 0, message = "Mức lương nhỏ nhất là 0!")
     private Double salary;
     private String salaryFormat;
     private Date dob;

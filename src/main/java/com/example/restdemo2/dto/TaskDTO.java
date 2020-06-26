@@ -24,6 +24,7 @@ public class TaskDTO {
 
     public TaskDTO(Task task) {
         modelMapper.map(task, this);
+        this.personId = task.getPerson().getId();
     }
 
     public Task toEntity() {
